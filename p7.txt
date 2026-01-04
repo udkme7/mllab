@@ -1,0 +1,41 @@
+# Support Vector Machine
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.svm import SVC
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import load_digits
+from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
+
+digits = load_digits()
+
+x_train, x_test, y_train, y_test = train_test_split(digits.data, digits.target, test_size = 0.3, random_state = 42, stratify = digits.target)
+
+scaler = StandardScaler()
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.fit_transform(x_test)
+
+svc = SVC(kernel = 'rbf', gamma = 0.05, C = 5)
+
+svc.fit(x_train, y_train)
+y_pred = svc.predict(x_test)
+
+print("Classification Report:")
+print(classification_report(y_test, y_pred))
+
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+print("Accuracy:")
+print(accuracy_score(y_test, y_pred))
+
+
+plt.figure(figsize = (8,4))
+for i in range(8):
+  plt.subplot(2,4,i+1)
+  plt.imshow(x_test[i].reshape(8,8))
+  plt.title(f"pred: {y_pred[i]} | actual: {y_test[i]}")
+
+plt.show()

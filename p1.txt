@@ -1,0 +1,27 @@
+# Data Visualization
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = sns.load_dataset("iris")
+
+df.head()
+df.info()
+df.isnull().sum()
+df.describe()
+
+plt.figure(figsize=(10,6))
+df.hist(figsize=(10,6), bins=15)
+plt.show()
+
+plt.figure(figsize=(8,6))
+sns.scatterplot(x='sepal_length', y='sepal_width', hue='species', data=df)
+plt.title("Sepal Length v/s Sepal Width")
+plt.show()
+
+plt.figure(figsize=(8,6))
+sns.boxplot(x='species', y='petal_length', data = df)
+plt.title("Petal length of different species")
+plt.show()

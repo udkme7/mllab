@@ -1,0 +1,33 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import fetch_openml
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+print("Loading Dataset...")
+mnist = fetch_openml('mnist_784', version=1)
+
+print("Dataset loaded successfully.")
+
+x = mnist.data
+y = mnist.target.astype('int')
+
+scaler = StandardScaler()
+x_scaled = scaler.fit_transform(x)
+
+pca = PCA(n_components=50)
+x_pca = pca.fit_transform(x_scaled)
+print("Reduced Dataset Size: ", x_pca.shape)
+
+plt.figure(figsize=(8,6))
+plt.plot(np.cumsum(pca.explained_variance_ratio_), marker = 'o')
+plt.title("Explained variance by Principal Components")
+plt.xlabel("Number of Components")
+plt.ylabel("Cumulative Explained Variance")
+plt.show()
+
+plt.figure(figsize=(8,6))
+plt.scatter(x_pca[:10000,0],x_pca[:10000,1],c=y[:10000],cmap='viridis',s=5)
+plt.colorbar(label='Digit Label')
+plt.show()
